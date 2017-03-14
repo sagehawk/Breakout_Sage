@@ -38,7 +38,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             let location = touch.location(in: self)
             paddle.position.x = location.x
+        }
     }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.node?.name == "brick" ||
+            contact.bodyB.node?.name == "brick" {
+            print("You win!")
+            brick.removeFromParent()
+            ball.removeFromParent()
+        }
+        if contact.bodyA.node?.name == "loseZone" ||
+            contact.bodyB.node?.name == "lozeZone" {
+            print("You lose!")
+            ball.removeFromParent()
+        }
     }
     
     func createBackground() {
@@ -47,7 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let starsBackground = SKSpriteNode(texture: stars)
             starsBackground.zPosition = -1
             starsBackground.position = CGPoint(x: 0, y:
-            starsBackground.size.height * CGFloat(i))
+                starsBackground.size.height * CGFloat(i))
             addChild(starsBackground)
             let moveDown = SKAction.moveBy(x:0, y:
                 -starsBackground.size.height, duration: 20)
@@ -89,6 +103,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         paddle = SKSpriteNode (color: UIColor.white, size: CGSize(width: frame.width/4, height: frame.height/25))
         paddle.position = CGPoint(x: frame.midX, y: frame.minY + 125)
         paddle.name = "paddle"
+        paddle.physicsBody = SKPhysicsBody(rectangleOf: paddle.size)
         paddle.physicsBody?.isDynamic = false
         addChild(paddle)
     }
