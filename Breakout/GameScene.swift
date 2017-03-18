@@ -23,7 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var lblLives = SKLabelNode(fontNamed: "System")
     var lives:Int = 3
-    var numberOfBricks = 0
+    var numberOfBricks = 8
     
     struct game {
         static var IsOver : Bool = false
@@ -64,13 +64,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.node?.name == "brick" ||
             contact.bodyB.node?.name == "brick" {
             brick.removeFromParent()
+            numberOfBricks -= 1
             print("\(numberOfBricks)")
             if numberOfBricks == 0 {
             print("You win!")
             game.IsOver = true
+            ball.removeFromParent()
             }
             
-            //ball.removeFromParent()
+            
             
         }
         if contact.bodyA.node?.name == "loseZone" ||
