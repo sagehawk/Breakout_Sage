@@ -9,6 +9,11 @@
 import SpriteKit
 import GameplayKit
 
+let BrickCategoryName = "brick"
+let BrickNodeCategoryName = "brickNode"
+let BrickCategory  : UInt32 = 0x1 << 2
+
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var ball = SKShapeNode()
@@ -30,15 +35,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createBackground()
         makeBall()
         makePaddle()
-        makeBrick()
+        //makeBrick()
         //createSprite()
-        multiplyBrick()
+        //multiplyBrick()
+        addbricks()
         makeLoseZone()
         makeBallIcon()
         makeLivesLabel()
         ball.physicsBody?.isDynamic = true
         ball.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 3))
-    }
+        }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
@@ -223,5 +229,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func updateScoreWithValue (value: Int) {
         lives -= value
         lblLives.text = "\(lives)"
+    }
+    func addbricks() {
+        // 1
+        let numberOfbricks = 8
+        let brickWidth = SKSpriteNode(imageNamed: "brick").size.width
+        let totalbricksWidth = brickWidth * CGFloat(numberOfbricks)
+        // 2
+        let xOffset = (frame.width - totalbricksWidth) / 2
+        // 3
+        for i in 0..<numberOfbricks {
+            let brick = SKSpriteNode(imageNamed: "brick.png")
+            brick.position = CGPoint(x: -210 /*xOffset*/ + CGFloat(CGFloat(i) + 0.5) * brickWidth,
+                                     y: 300)//frame.height * 0.8)
+            
+            brick.physicsBody = SKPhysicsBody(rectangleOf: brick.frame.size)
+            brick.physicsBody!.allowsRotation = false
+            brick.physicsBody!.friction = 0.0
+            brick.physicsBody!.affectedByGravity = false
+            brick.physicsBody!.isDynamic = false
+            brick.name = BrickCategoryName
+            brick.physicsBody!.categoryBitMask = BrickCategory
+            brick.zPosition = 2
+            addChild(brick)
+        }
+
     }
 }
