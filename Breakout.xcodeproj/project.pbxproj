@@ -526,6 +526,7 @@
 				AD1F095F1E76FAE40022D187 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AD1F09601E76FAE40022D187 /* Build configuration list for PBXNativeTarget "BreakoutTests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +535,7 @@
 				AD1F09621E76FAE40022D187 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AD1F09631E76FAE40022D187 /* Build configuration list for PBXNativeTarget "BreakoutUITests" */ = {
 			isa = XCConfigurationList;
@@ -542,6 +544,7 @@
 				AD1F09651E76FAE40022D187 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
