@@ -9,9 +9,15 @@
 import SpriteKit
 import GameplayKit
 
+let BallCategoryName = "ball"
+let PaddleCategoryName = "paddle"
 let BrickCategoryName = "brick"
 let BrickNodeCategoryName = "brickNode"
-let BrickCategory  : UInt32 = 0x1 << 2
+
+let BallCategory   : UInt32 = 0x1 << 0 // 00000000000000000000000000000001
+let BottomCategory : UInt32 = 0x1 << 1 // 00000000000000000000000000000010
+let BrickCategory  : UInt32 = 0x1 << 2 // 00000000000000000000000000000100
+let PaddleCategory : UInt32 = 0x1 << 3 // 00000000000000000000000000001000
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -61,7 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node?.name == "brick" ||
+        if contact.bodyA.node?.name == BrickCategoryName ||
             contact.bodyB.node?.name == "brick" {
             brick.removeFromParent()
             numberOfBricks -= 1
@@ -103,7 +109,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func createBackground() {
+    /*func createBackground() {
         let stars = SKTexture(imageNamed: "stars")
         for i in 0...1 {
             let starsBackground = SKSpriteNode(texture: stars)
@@ -118,6 +124,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let moveLoop = SKAction.sequence([moveDown, moveReset])
             let moveForever = SKAction.repeatForever(moveLoop)
             starsBackground.run(moveForever)
+        }
+    }*/
+    
+    func createBackground() {
+        let skyline = SKTexture(imageNamed: "skyline")
+        for i in 0...1 {
+            let nintendoBackground = SKSpriteNode(texture: skyline)
+            nintendoBackground.zPosition = -1
+            nintendoBackground.position = CGPoint(x: 0, y:
+                nintendoBackground.size.height * CGFloat(i))
+            addChild(nintendoBackground)
+            let moveDown = SKAction.moveBy(x:0, y:
+                -nintendoBackground.size.height + 50, duration: 20)
+            let moveReset = SKAction.moveBy(x: 0, y:
+                nintendoBackground.size.height, duration: 0)
+            let moveLoop = SKAction.sequence([moveDown, moveReset])
+            let moveForever = SKAction.repeatForever(moveLoop)
+            nintendoBackground.run(moveForever)
         }
     }
     
@@ -147,7 +171,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func makePaddle() {
-        paddle = SKSpriteNode (color: UIColor.white, size: CGSize(width: frame.width/4, height: frame.height/25))
+        paddle = SKSpriteNode (imageNamed: "paddle.png")//color: UIColor.white, size: CGSize(width: frame.width/4, height: frame.height/25))
         paddle.position = CGPoint(x: frame.midX, y: frame.minY + 125)
         paddle.name = "paddle"
         paddle.physicsBody = SKPhysicsBody(rectangleOf: paddle.size)
@@ -166,6 +190,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
+    
     func makeLoseZone() {
         let loseZone = SKSpriteNode(color: UIColor.red, size: CGSize(width: frame.width, height: 50))
         loseZone.position = CGPoint(x: frame.midX, y: frame.minY + 25)
@@ -175,23 +201,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(loseZone)
     }
     
-    /*func createSprite()->SKSpriteNode{
-        brick = SKSpriteNode(color: UIColor.blue, size: CGSize(width: frame.width/5, height: frame.height/25))
-        brick.position = CGPoint(x: frame.midX, y: frame.maxY - 30)
-        brick.name = "brick"
-        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
-        brick.physicsBody?.isDynamic = false
-        addChild(brick)//Use the init function in the SKSpriteNode class
-        //Add some code to define the sprite's property
-        return brick
-        let spriteOne = makeBrick()
-        let spriteTwo = createSprite()
-        let moveUp = SKAction.moveBy(x: 0,
-                                     y: -100,//switched to negative will move down
-                                     duration: 1.0)
-        brick.run(moveUp)
-    }*/
-    func multiplyBrick() {
+    func skActions() {
         makeBrick()
         let moveRight = SKAction.moveBy(x: 100,
                                      y: 0,
@@ -232,7 +242,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lives -= value
         lblLives.text = "\(lives)"
     }
-    func addbricks() {
+    /*func addbricks() {
         // 1
         let numberOfbricks = 8
         let brickWidth = SKSpriteNode(imageNamed: "brick").size.width
@@ -241,7 +251,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let xOffset = (frame.width - totalbricksWidth) / 2
         // 3
         for i in 0..<numberOfbricks {
-            let brick = SKSpriteNode(imageNamed: "brick.png")
+            brick = SKSpriteNode(imageNamed: "brick.png")
             brick.position = CGPoint(x: -210 /*xOffset*/ + CGFloat(CGFloat(i) + 0.5) * brickWidth,
                                      y: 300)//frame.height * 0.8)
             
@@ -256,5 +266,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(brick)
         }
 
-    }
+    }*/
 }
