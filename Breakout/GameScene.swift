@@ -9,11 +9,6 @@
 import SpriteKit
 import GameplayKit
 
-//let BallCategoryName = "ball"
-//let PaddleCategoryName = "paddle"
-//let BrickCategoryName = "brick"
-//let BrickNodeCategoryName = "brickNode"
-
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var ball = SKShapeNode()
@@ -24,7 +19,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lblGameOver = SKLabelNode()
     var lblGameWon = SKLabelNode()
     var lblLives = SKLabelNode(fontNamed: "System")
+    var lblScore = SKLabelNode(fontNamed: "System")
     var lives:Int = 3
+    var score:Int = 0
+    var level:Int = 0
     var numberOfBricks = 0
     
     struct game {
@@ -63,46 +61,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    /*func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node == brick ||
-            contact.bodyB.node == brick {
-            brick.removeFromParent()
-            numberOfBricks -= 1
-            print("\(numberOfBricks)")
-            if numberOfBricks == 0 {
-                print("You win!")
-                game.IsOver = true
-                ball.removeFromParent()
-            }
-            
-        }
-        
-        if contact.bodyA.node?.name == "loseZone" ||
-            contact.bodyB.node?.name == "lozeZone" {
-            
-            self.updateScoreWithValue (value: 1)
-            ball.removeFromParent()
-            makeBall()
-            game.IsOver = false
-            ball.physicsBody?.isDynamic = true
-            ball.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 3))
-            
-            if lives == 0 {
-                
-                print("You lose!")
-                ball.removeFromParent()
-                game.IsOver = true
-                
-            }
-            resetGame()
-            
-        }
-    }*/
-    
     func didBegin(_ contact: SKPhysicsContact) {
-        for brick in bricks{
+        for brick in bricks {
             if contact.bodyA.node == brick ||
                 contact.bodyB.node == brick {
+                score += 1
+                lblScore.text = "Score: \(score)"
                 brick.removeFromParent()
                 numberOfBricks -= 1
                 
@@ -163,23 +127,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             starsBackground.run(moveForever)
         }
     }
-    /* func createBackground() {
-        let skyline = SKTexture(imageNamed: "skyline")
-        for i in 0...1 {
-            let nintendoBackground = SKSpriteNode(texture: skyline)
-            nintendoBackground.zPosition = -1
-            nintendoBackground.position = CGPoint(x: 0, y:
-                nintendoBackground.size.height * CGFloat(i))
-            addChild(nintendoBackground)
-            let moveDown = SKAction.moveBy(x:0, y:
-                -nintendoBackground.size.height + 50, duration: 20)
-            let moveReset = SKAction.moveBy(x: 0, y:
-                nintendoBackground.size.height, duration: 0)
-            let moveLoop = SKAction.sequence([moveDown, moveReset])
-            let moveForever = SKAction.repeatForever(moveLoop)
-            nintendoBackground.run(moveForever)
-        }
-    } */
     
     func makeBall() {
         ball = SKShapeNode(circleOfRadius: 10)
@@ -225,8 +172,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func makeBallIcon() {
-        ballIcon = SKShapeNode(circleOfRadius: 10)
-        ballIcon.position = CGPoint(x: -185, y: 355)
+        ballIcon = SKShapeNode(circleOfRadius: 12)
+        ballIcon.position = CGPoint(x: -189, y: 352)
         ballIcon.strokeColor = UIColor.black
         ballIcon.fillColor = UIColor.white
         ballIcon.name = "BallIcon"
@@ -237,8 +184,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //The variable holding the score.
         lblLives = SKLabelNode()
         lblLives.text = "X \(lives)"
-        lblLives.fontSize = 20
-        lblLives.position = CGPoint(x: -153, y: 347)
+        lblLives.fontSize = 30
+        lblLives.position = CGPoint(x: -153, y: 340)
         addChild(lblLives)
         
         lblGameOver = SKLabelNode()
@@ -251,6 +198,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lblGameWon.fontSize = 50
         lblGameWon.position = CGPoint(x: 0, y: 0)
 
+        lblScore = SKLabelNode()
+        lblScore.text = "Score: \(score)"
+        lblScore.fontSize = 30
+        lblScore.position = CGPoint(x: 110, y: 340)
+        addChild(lblScore)
         
     }
     
@@ -263,6 +215,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if game.IsOver == true
         {
+            score = 0
             self.removeAllActions()
             self.removeAllChildren()
             addChild(lblGameOver)
@@ -280,6 +233,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.removeAllActions()
             self.removeAllChildren()
             addChild(lblGameWon)
+            level += 1
         }
     }
     
