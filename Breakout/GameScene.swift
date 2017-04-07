@@ -22,7 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lblScore = SKLabelNode(fontNamed: "System")
     var lives:Int = 3
     var score:Int = 0
-    var level:Int = 0
+    var level:Int = 1
     var numberOfBricks = 0
     
     struct game {
@@ -35,7 +35,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createBackground()
         makeBall()
         makePaddle()
-        multipleBricks()
+        //multipleBricks()
+        level1()
         makeLoseZone()
         makeBallIcon()
         makeLabels()
@@ -265,15 +266,59 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         numberOfBricks = 0
         self.removeAllActions()
         self.removeAllChildren()
+        level1()
+        level2()
+        level3()
         createBackground()
         makeBall()
         makePaddle()
-        multipleBricks()
+        //multipleBricks()
         makeLoseZone()
         makeBallIcon()
         makeLabels()
         ball.physicsBody?.isDynamic = true
         ball.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 3))
-
+    }
+    
+    func level1()
+    {
+        if level == 1
+        {
+            let countB = Int(frame.width) / 100
+            let height = Int(frame.maxY)
+            let xOffset = (Int(frame.width) - (countB * 100)) / 10 + Int(frame.minX) + 50
+            for x in 0..<countB{makeBrick(x: x * 100 + xOffset, y: height - 100) }
+            for x in 0..<countB{makeBrick(x: x * 100 + xOffset, y: height - 250) }
+            for x in 0..<countB{makeBrick(x: x * 100 + xOffset, y: height - 400) }
+        }
+    }
+    
+    func level2()
+    {
+        if level == 2
+        {
+            let countB = Int(frame.width) / 100
+            let height = Int(frame.maxY)
+            let xOffset = (Int(frame.width) - (countB * 100)) / 10 + Int(frame.minX) + 50
+            for x in 0..<countB{makeBrick(x: x * 100 + xOffset, y: height - 100) }
+            for x in 0..<countB{makeBrick(x: x * 50 + xOffset, y: height - 150) }
+            for x in 0..<countB{makeBrick(x: x * 150 + xOffset, y: height - 200) }
+            
+        }
+        
+    }
+    
+    func level3()
+    {
+        if level == 3
+        {
+            let countB = Int(frame.width) / 100
+            let height = Int(frame.maxY)
+            let xOffset = (Int(frame.width) - (countB * 100)) / 10 + Int(frame.minX) + 50
+            for x in 0..<countB{makeBrick(x: x * 100 + xOffset, y: height - 100) }
+            for x in 0..<countB{makeBrick(x: x * 100 + xOffset, y: height - 150) }
+            for x in 0..<countB{makeBrick(x: x * 100 + xOffset, y: height - 200) }
+        }
+        
     }
 }
